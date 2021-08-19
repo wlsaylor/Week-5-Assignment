@@ -9,13 +9,13 @@ class Recipe {
 class Menu {
   constructor(name) {
     this.name = name;
-    this.Recipes = [];
+    this.recipes = [];
   }
 }
 
 class MenuManager {
   constructor() {
-    this.Menus = [];
+    this.menus = [];
     this.selected = null;
   }
 
@@ -33,61 +33,62 @@ class MenuManager {
         case '3':
           this.deleteMenu();
           break;
-        case '4':
-          this.displayMenus();
-          break;
         default:
           selection = 0;
       }
-      selection = this.showMainMenuOptions();
+
+      let menuList = '';
+      for (let i = 0; i < this.menus.length; i++) {
+          if (i === 0) {
+            menuList += i + ') ' + this.menus[i].name + '\n';
+          } else {
+            menuList += '      ' + i + ') ' + this.menus[i].name + '\n';
+          }
+      }
+
+      selection = this.showMainMenuOptions(menuList);
     }
 
     alert('Goodbye!');
   }
 
-  showMainMenuOptions() {
+  showMainMenuOptions(menus) {
     return prompt(`
-    0) exit
-    1) create new Menu
-    2) view Menu
-    3) delete Menu
-    4) display all Menus
+      --Menu Manager--
+      0) Exit
+      1) Create New Menu
+      2) Edit Menu
+      3) Delete Menu
+      --------------------------
+      ${menus ? menus : ''}
     `);
   }
 
-  showMenuMenuOptions(MenuInfo) {
+  showMenuMenuOptions(menuInfo) {
     return prompt(`
-      0) back
-      1) create Recipe
-      2) delete Recipe
-      ------------------------
-      ${MenuInfo}
+      0) Back
+      1) Add Recipe
+      2) Delete Recipe
+      --------------------------
+      ${menuInfo}
     `);
-  }
-
-  displayMenus() {
-    let MenuString = '';
-    for (let i = 0; i < this.Menus.length; i++) {
-      MenuString += i + ') ' + this.Menus[i].name + '\n';
-    }
-    alert(MenuString);
   }
 
   createMenu() {
-    let name = prompt('Enter name of new Menu.');
-    this.Menus.push(new Menu(name));
+    let name = prompt('Enter name of the new Menu.');
+    this.menus.push(new Menu(name));
   }
 
   viewMenu() {
     let index = prompt('Enter the index of the Menu you want to view');
-    if (index > -1 && index < this.Menus.length) {
-      this.selectedMenu = this.Menus[index];
+    if (index > -1 && index < this.menus.length) {
+      this.selectedMenu = this.menus[index];
       let description =  'Menu Name: ' + this.selectedMenu.name + '\n';
       
-      for(let i = 0; i < this.selectedMenu.Recipes.length; i++) {
-        description += i + ') ' + this.selectedMenu.Recipes[i].name
-          + ' - ' + this.selectedMenu.Recipes[i].description 
-          + ' $' + this.selectedMenu.Recipes[i].price + '\n';
+      for(let i = 0; i < this.selectedMenu.recipes.length; i++) {
+        description += i + ') ' + this.selectedMenu.recipes[i].name
+          + ' - ' + this.selectedMenu.recipes[i].description 
+          + ' $' + this.selectedMenu.recipes[i].price + '\n';
       }
 
       let selection = this.showMenuMenuOptions(description);
@@ -98,27 +99,29 @@ class MenuManager {
         case '2':
           this.deleteRecipe();
       }
+
+      selection = this.showMenuMenuOptions(description);
     }
   }
 
   deleteMenu() {
     let index = prompt('Enter the index of the Menu you wish to delete');
-    if (index > -1 && index < this.Menus.length) {
-      this.Menus.splice(index, 1);
+    if (index > -1 && index < this.menus.length) {
+      this.menus.splice(index, 1);
     }
   }
 
   createRecipe() {
     let name = prompt('Enter name for new recipe.');
     let description = prompt('Enter description for new recipe');
-    let price = prompt('Enter price for new Recipe');
-    this.selectedMenu.Recipes.push(new Recipe(name, description, price));
+    let price = prompt('Enter price for new recipe');
+    this.selectedMenu.recipes.push(new Recipe(name, description, price));
   }
 
   deleteRecipe() {
-    let index = prompt('Enter the index of the Recipe you wish to delete');
-    if (index > -1 && index < this.selectedMenu.Recipes.length) {
-      this.selectedMenu.Recipes.splice(index, 1);
+    let index = prompt('Enter the index of the recipe you wish to delete');
+    if (index > -1 && index < this.selectedMenu.recipes.length) {
+      this.selectedMenu.recipes.splice(index, 1);
     }
   }
 }
