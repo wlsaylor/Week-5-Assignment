@@ -19,11 +19,15 @@ class MenuManager {
     this.selected = null;
   }
 
+  // Loads the main menu for the app
   start() {
     let selection = this.showMainMenuOptions();
 
     while (selection != 0) {
       switch (selection) {
+        case null:
+          alert('Goodbye!');
+          return;
         case '1':
           this.createMenu();
           break;
@@ -37,6 +41,7 @@ class MenuManager {
           selection = 0;
       }
 
+      //Displays the list of menu names on the main menu
       let menuList = '';
       for (let i = 0; i < this.menus.length; i++) {
           if (i === 0) {
@@ -77,11 +82,14 @@ class MenuManager {
 
   createMenu() {
     let name = prompt('Enter name of the new Menu.');
+    if (name === null) {return;}
     this.menus.push(new Menu(name));
   }
 
+  //Loads the individual menu to create and delete recipes
   viewMenu() {
     let index = prompt('Enter the index of the Menu you want to view');
+    if (index === null) {return;}
     if (index > -1 && index < this.menus.length) {
       this.selectedMenu = this.menus[index];
       let description =  'Menu Name: ' + this.selectedMenu.name + '\n';
@@ -90,6 +98,8 @@ class MenuManager {
       while (selection != 0) {
 
         switch (selection) {
+          case null:
+            return;
           case '1':
             this.createRecipe();
             break;
@@ -99,7 +109,8 @@ class MenuManager {
           default:
             selection = 0;
         }
-
+        
+        //Displays the recipe list on the menu
         let recipeList = '';
         for(let i = 0; i < this.selectedMenu.recipes.length; i++) {
           if (i === 0 ) {
@@ -120,6 +131,7 @@ class MenuManager {
 
   deleteMenu() {
     let index = prompt('Enter the index of the Menu you wish to delete');
+    if (index === null) {return;}
     if (index > -1 && index < this.menus.length) {
       this.menus.splice(index, 1);
     }
@@ -127,13 +139,17 @@ class MenuManager {
 
   createRecipe() {
     let name = prompt('Enter name for new recipe.');
+    if (name === null) {return;}
     let description = prompt('Enter description for new recipe');
+    if (description === null) {return;}
     let price = prompt('Enter price for new recipe');
+    if (price === null) {return;}
     this.selectedMenu.recipes.push(new Recipe(name, description, price));
   }
 
   deleteRecipe() {
     let index = prompt('Enter the index of the recipe you wish to delete');
+    if (index === null) {return;}
     if (index > -1 && index < this.selectedMenu.recipes.length) {
       this.selectedMenu.recipes.splice(index, 1);
     }
