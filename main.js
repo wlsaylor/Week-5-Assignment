@@ -54,7 +54,7 @@ class MenuManager {
 
   showMainMenuOptions(menus) {
     return prompt(`
-      --Menu Manager--
+      --Restaraunt Menu Manager-- Menus
       0) Exit
       1) Create New Menu
       2) Edit Menu
@@ -66,11 +66,12 @@ class MenuManager {
 
   showMenuMenuOptions(menuInfo) {
     return prompt(`
+      --Restaraunt Menu Manager-- Recipes
       0) Back
-      1) Add Recipe
+      1) Create Recipe
       2) Delete Recipe
       --------------------------
-      ${menuInfo}
+      ${menuInfo ? menuInfo : ''}
     `);
   }
 
@@ -84,23 +85,36 @@ class MenuManager {
     if (index > -1 && index < this.menus.length) {
       this.selectedMenu = this.menus[index];
       let description =  'Menu Name: ' + this.selectedMenu.name + '\n';
-      
-      for(let i = 0; i < this.selectedMenu.recipes.length; i++) {
-        description += i + ') ' + this.selectedMenu.recipes[i].name
-          + ' - ' + this.selectedMenu.recipes[i].description 
-          + ' $' + this.selectedMenu.recipes[i].price + '\n';
-      }
+      let selection = this.showMenuMenuOptions();
 
-      let selection = this.showMenuMenuOptions(description);
-      switch (selection) {
-        case '1':
-          this.createRecipe();
-          break;
-        case '2':
-          this.deleteRecipe();
-      }
+      while (selection != 0) {
 
-      selection = this.showMenuMenuOptions(description);
+        switch (selection) {
+          case '1':
+            this.createRecipe();
+            break;
+          case '2':
+            this.deleteRecipe();
+            break;
+          default:
+            selection = 0;
+        }
+
+        let recipeList = '';
+        for(let i = 0; i < this.selectedMenu.recipes.length; i++) {
+          if (i === 0 ) {
+            recipeList += i + ') ' + this.selectedMenu.recipes[i].name
+            + ' - ' + this.selectedMenu.recipes[i].description 
+            + ' $' + this.selectedMenu.recipes[i].price + '\n';
+          } else {
+            recipeList += '      ' + i + ') ' + this.selectedMenu.recipes[i].name
+            + ' - ' + this.selectedMenu.recipes[i].description 
+            + ' $' + this.selectedMenu.recipes[i].price + '\n';
+          }
+        }
+
+        selection = this.showMenuMenuOptions(recipeList);
+      }
     }
   }
 
