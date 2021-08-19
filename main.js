@@ -59,7 +59,7 @@ class MenuManager {
 
   showMainMenuOptions(menus) {
     return prompt(`
-      --Restaraunt Menu Manager-- Menus
+      --Restaraunt Menu Manager--
       0) Exit
       1) Create New Menu
       2) Edit Menu
@@ -69,9 +69,10 @@ class MenuManager {
     `);
   }
 
-  showMenuMenuOptions(menuInfo) {
+  showMenuMenuOptions(menuInfo, index) {
+    this.selectedMenu = this.menus[index];
     return prompt(`
-      --Restaraunt Menu Manager-- Recipes
+      --${this.selectedMenu.name} Menu--
       0) Back
       1) Create Recipe
       2) Delete Recipe
@@ -92,8 +93,7 @@ class MenuManager {
     if (index === null) {return;}
     if (index > -1 && index < this.menus.length) {
       this.selectedMenu = this.menus[index];
-      let description =  'Menu Name: ' + this.selectedMenu.name + '\n';
-      let selection = this.showMenuMenuOptions();
+      let selection = this.showMenuMenuOptions('', index);
 
       while (selection != 0) {
 
@@ -124,7 +124,7 @@ class MenuManager {
           }
         }
 
-        selection = this.showMenuMenuOptions(recipeList);
+        selection = this.showMenuMenuOptions(recipeList, index);
       }
     }
   }
